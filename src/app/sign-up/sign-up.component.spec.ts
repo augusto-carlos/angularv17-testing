@@ -4,6 +4,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
 
 describe('SignUpComponent Layout', () => {
   let component: SignUpComponent;
@@ -63,6 +64,8 @@ describe('Interactions', () => {
   let component: SignUpComponent;
   let fixture: ComponentFixture<SignUpComponent>;
   let document: HTMLElement;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -100,16 +103,46 @@ describe('Interactions', () => {
     const button = document.querySelector(
       'button[type="submit"]'
     ) as HTMLButtonElement;
+
     expect(button.disabled).toBeFalsy();
   });
 
   it('Send the sign up data to the server', () => {
-    let httpTestingController = TestBed.inject(HttpTestingController);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    // httpClient = TestBed.inject(HttpClient);
 
     const emailInput = document.querySelector(
       'input[id="email"]'
     ) as HTMLInputElement;
     emailInput.value = 'test@gmail.com';
     emailInput.dispatchEvent(new Event('input'));
+
+    const passwordInput = document.querySelector(
+      'input[id="password"]'
+    ) as HTMLInputElement;
+    passwordInput.value = '1234';
+    passwordInput.dispatchEvent(new Event('input'));
+
+    const secondPasswordInput = document.querySelector(
+      'input[id="second-password"]'
+    ) as HTMLInputElement;
+    secondPasswordInput.value = '1234';
+    secondPasswordInput.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+
+    const button = document.querySelector(
+      'button[type="submit"]'
+    ) as HTMLButtonElement;
+    //button.click();
+
+    console.log(button);
+
+    // const req = httpTestingController.expectOne(
+    //   'https://reqres.in/api/register'
+    // );
+    // console.log({ req });
+
+    // expect(req.request.method).toBe('POST');
   });
 });
